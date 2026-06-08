@@ -1,37 +1,35 @@
- const app = document.querySelector('#app');
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", './include/consulta.php', true);
+const app = document.querySelector('#app');
+const xhr = new XMLHttpRequest();
 
-        xhr.onload = function() {
-            var data = xhr.responseText;
-            if(xhr.status === 200){
-               var dados = JSON.parse(data);
-                console.log(typeof(dados));
-                dados.forEach(element => {
-                   item(element)
-                });
-            }
-        };
-        xhr.send('string');
+xhr.open('GET', './include/consulta.php', true);
+xhr.onload = function () {
+    if (xhr.status !== 200) {
+        return;
+    }
 
+    const dados = JSON.parse(xhr.responseText);
+    dados.forEach((element) => {
+        item(element);
+    });
+};
+xhr.send();
 
+function item(data) {
+    const block = document.createElement('div');
+    const title = document.createElement('h2');
+    const thumb = document.createElement('img');
+    const list = document.createElement('ul');
+    const listItem = document.createElement('li');
 
-        function item(data){
-            var block = document.createElement('div');
+    thumb.setAttribute('src', data.link_thumb || 'https://via.placeholder.com/320x180?text=Sem+imagem');
+    thumb.setAttribute('alt', `Imagem do registro ${data.codigo}`);
+    title.textContent = `TIPO: ${data.subtipo}`;
+    listItem.textContent = `CÓDIGO: ${data.codigo}`;
 
-            var H2 = document.createElement('h2');
-            var thumb = document.createElement('img');
-            var list = document.createElement('ul');
-            var listItem = document.createElement('li');
-            console.log(data);
-            thumb.setAttribute('src', data[0].link_thumb);
-            H2.textContent = "TIPO: " + data.subtipo;
-            listItem.textContent = "CÓDIGO: " + data.codigo;
-            
-            block.appendChild(H2);
-            list.appendChild(listItem);
-            block.appendChild(list);
-            block.appendChild(thumb);
+    block.appendChild(title);
+    list.appendChild(listItem);
+    block.appendChild(list);
+    block.appendChild(thumb);
 
-            app.appendChild(block);
-        }
+    app.appendChild(block);
+}
