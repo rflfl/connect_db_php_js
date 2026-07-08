@@ -5,6 +5,7 @@ Acessar dados do banco com JavaScript e PHP.
 ## Bancos suportados
 
 - MySQL
+- MariaDB
 - PostgreSQL
 
 ## Configuracao
@@ -13,7 +14,7 @@ Edite o arquivo `include/con_db.php` com o driver e as credenciais do banco:
 
 ```php
 return [
-    'driver' => 'mysql', // use 'pgsql' para PostgreSQL
+    'driver' => 'mysql', // use 'mariadb' ou 'pgsql' quando necessario
     'host' => '127.0.0.1',
     'port' => 3306,
     'database' => 'imobiliariadb',
@@ -21,6 +22,13 @@ return [
     'password' => '',
     'charset' => 'utf8mb4',
 ];
+```
+
+Para MariaDB, altere pelo menos:
+
+```php
+'driver' => 'mariadb',
+'port' => 3306,
 ```
 
 Para PostgreSQL, altere pelo menos:
@@ -35,6 +43,7 @@ Para PostgreSQL, altere pelo menos:
 Os dumps de exemplo estao em:
 
 - `database/mysql.sql`
+- `database/mariadb.sql`
 - `database/postgresql.sql`
 
 ## Consulta usada

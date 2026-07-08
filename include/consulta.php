@@ -6,18 +6,19 @@ $config = require __DIR__ . '/con_db.php';
 header('Content-Type: application/json; charset=utf-8');
 
 try {
-    $driver = $config['driver'] ?? 'mysql';
+    $driver = strtolower((string) ($config['driver'] ?? 'mysql'));
+    $pdoDriver = $driver === 'mariadb' ? 'mysql' : $driver;
     $host = $config['host'] ?? '127.0.0.1';
-    $port = $config['port'] ?? ($driver === 'pgsql' ? 5432 : 3306);
+    $port = $config['port'] ?? ($pdoDriver === 'pgsql' ? 5432 : 3306);
     $database = $config['database'] ?? '';
     $username = $config['username'] ?? '';
     $password = $config['password'] ?? '';
     $charset = $config['charset'] ?? 'utf8mb4';
 
-    if ($driver === 'pgsql') {
+    if ($pdoDriver === 'pgsql') {
         $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $database);
     } else {
-        $dsn = sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s', $driver, $host, $port, $database, $charset);
+        $dsn = sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s', $pdoDriver, $host, $port, $database, $charset);
     }
 
     $pdo = new PDO($dsn, $username, $password, [
